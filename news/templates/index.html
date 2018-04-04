@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+
+
+{% block content %}
+	{% for title in titles %}
+	<a href="/file/{{title.id}}">{{title.title}}
+	{% for tag_name in tag %}
+	<p>{{tag_name.name}}</p>
+	{% endfor %}
+	{% endfor %}
+
+{% endblock %}
+
