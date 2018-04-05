@@ -4,11 +4,10 @@
 
 {% block content %}
 	{% for title in titles %}
-	<a href="/file/{{title.id}}">{{title.title}}
+	<a href="/file/{{title.id}}">{{title.title}}</a><br>
+	{% endfor %}
 	{% for tag_name in tag %}
-	<p>{{tag_name.name}}</p>
+	<p>{{tag_name}}</p><br>
 	{% endfor %}
-	{% endfor %}
-
 {% endblock %}
 

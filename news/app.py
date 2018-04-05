@@ -17,8 +17,9 @@ def index():
 	titles = File.query.all()
 	tags = []
 	for title in titles:
-		file_tag = monDb.tag.find({'file_id':title.id})
-		tags.append(list(file_tag))
+		file_tag = monDb.tag.find_one({'file_id':title.id})
+		print(file_tag)
+		tags.append(file_tag['name'])
 
 	return render_template('index.html',titles = titles,tag = tags)
 
@@ -60,20 +61,21 @@ class File(db.Model):
 		return '<File %r>' % self.title
 
 	def add_tag(self,tag_name):
-		file_id = File.query.filter_by(created_time=self.created_time).first().id
-		print(type(file_id))
-		tag = monDb.tag.find_one({'file_id':file_id,'name':tag_name})
+		file_id = self.id
+		tag = monDb.tag.find_one({'file_id':file_id})
 		if tag is not None:
 			print('update',file_id,tag_name,tag)
+			monDb.tag.update_one({'file_id':file_id},{'$set':{'name':tag['name'] if tag_name in tag['name'] else tag['name']+','+tag_name}})
 		else:
 			print('insert',self.id,tag_name)
 			monDb.tag.insert_one({'file_id':file_id,'name':tag_name})
 
 	def remove_tag(self,tag_name):
-		file_id = File.query.filter_by(created_time=self.created_time).first().id
-		#tag = monDb.tag.find_one({'_id':id,'name':tag_name})
+		file_id = self.id
+		#file_id = File.query.filter_by(created_time=self.created_time).first().id
+		tag = monDb.tag.find_one({'file_id':file_id})
 		#if tag is not None:
-		monDb.tag.delete_one({'file_id':file_id,'name':tag_name})
+		monDb.tag.update_one({'file_id':file_id},{'$set':{'name':tag['name'].replace(tag_name,'').replace(',,',',') if tag_name in tag['name'] else tag['name']}})
 		
 	@property
 	def tags(self):
