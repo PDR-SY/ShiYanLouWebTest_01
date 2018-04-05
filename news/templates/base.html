@@ -1,9 +1,10 @@
 <html>
 	<head>
 		<title>HTML5 LEAREN</title>
-		<link rel="stylesheet" type="text/css" href="base.css">
+		<link href="{{url_for('static',filename="bootstrap-3.3.7-dist/css/bootstrap.min.css")}}" rel="stylesheet">
 	</head>
 	<body>
+    <script src="{{url_for('static',filename="bootstrap-3.3.7-dist/js/bootstrap.min.js")}}"></script>
 	<div id="header">
 		{% block header %}
 		<h1>Hou Yu Hang's Blog</h1>
